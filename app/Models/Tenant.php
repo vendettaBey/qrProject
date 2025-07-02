@@ -2,26 +2,26 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Tenant extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
-        'domain',
         'name',
-        'database_name',
-        'status',
-        'settings',
-        'trial_ends_at',
-        'subscription_ends_at',
+        'email',
+        'phone',
+        'address',
+        'theme_id',
+        'is_active',
     ];
 
     protected $casts = [
-        'settings' => 'array',
-        'trial_ends_at' => 'datetime',
-        'subscription_ends_at' => 'datetime',
+        'is_active' => 'boolean',
     ];
 
     public function users(): HasMany
@@ -36,21 +36,19 @@ class Tenant extends Model
 
     public function isActive(): bool
     {
-        return $this->status === 'active';
+        return $this->is_active;
     }
 
-    public function isOnTrial(): bool
-    {
-        return $this->trial_ends_at && $this->trial_ends_at->isFuture();
-    }
-
-    public function hasActiveSubscription(): bool
-    {
-        return !$this->subscription_ends_at || $this->subscription_ends_at->isFuture();
-    }
-
-    public function theme()
+    public function theme(): BelongsTo
     {
         return $this->belongsTo(Theme::class);
+    }
+
+    /**
+     * Tenant'ın kullanabileceği tüm temaları getir
+     */
+    public function themes()
+    {
+        return $this->hasMany(Theme::class);
     }
 }

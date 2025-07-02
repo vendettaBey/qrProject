@@ -8,16 +8,28 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Menu extends Model
 {
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
     protected $fillable = [
         'tenant_id',
         'name',
         'description',
+        'slug',
+        'restaurant_id',
         'is_active',
         'logo',
         'cover_image',
         'settings',
     ];
 
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
     protected $casts = [
         'is_active' => 'boolean',
         'settings' => 'array',

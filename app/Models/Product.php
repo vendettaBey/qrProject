@@ -7,27 +7,31 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Product extends Model
 {
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
     protected $fillable = [
-        'category_id',
         'name',
         'description',
         'price',
         'image',
-        'is_available',
-        'is_featured',
-        'sort_order',
-        'options',
-        'allergens',
-        'nutrition',
+        'category_id',
+        'menu_id',
+        'featured',
+        'is_active'
     ];
 
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
     protected $casts = [
         'price' => 'decimal:2',
-        'is_available' => 'boolean',
-        'is_featured' => 'boolean',
-        'options' => 'array',
-        'allergens' => 'array',
-        'nutrition' => 'array',
+        'featured' => 'boolean',
+        'is_active' => 'boolean'
     ];
 
     public function category(): BelongsTo

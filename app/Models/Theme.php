@@ -2,27 +2,43 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Theme extends Model
 {
+    use HasFactory;
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
     protected $fillable = [
         'name',
         'description',
-        'preview_image',
-        'is_premium',
-        'price',
+        'folder_name',
+        'thumbnail',
         'is_active',
-        'config',
-        'version',
+        'tenant_id'
     ];
 
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
     protected $casts = [
-        'is_premium' => 'boolean',
-        'price' => 'decimal:2',
         'is_active' => 'boolean',
-        'config' => 'array',
     ];
+
+    /**
+     * Temanın ait olduğu tenant
+     */
+    public function tenant()
+    {
+        return $this->belongsTo(Tenant::class);
+    }
 
     public function getPreviewImageUrlAttribute(): string
     {

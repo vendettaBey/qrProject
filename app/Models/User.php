@@ -7,11 +7,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Spatie\Permission\Traits\HasRoles;
+
 
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -56,23 +58,6 @@ class User extends Authenticatable
         return $this->belongsTo(Tenant::class);
     }
 
-    public function isSuperAdmin(): bool
-    {
-        return $this->role === 'super_admin';
-    }
-
-    public function isAdmin(): bool
-    {
-        return in_array($this->role, ['super_admin', 'admin']);
-    }
-
-    public function isManager(): bool
-    {
-        return in_array($this->role, ['super_admin', 'admin', 'manager']);
-    }
-
-    public function hasRole(string $role): bool
-    {
-        return $this->role === $role;
-    }
+    // Spatie ile rol kontrolü için örnek:
+    // $user->hasRole('super_admin') veya $user->hasAnyRole(['admin', 'super_admin'])
 }

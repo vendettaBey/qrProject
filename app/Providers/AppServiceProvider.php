@@ -11,7 +11,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->register(\App\Providers\Filament\SuperAdminPanelProvider::class);
+        $this->app->register(\App\Providers\Filament\CustomerPanelProvider::class);
     }
 
     /**

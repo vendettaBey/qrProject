@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
 class AuthenticatedSessionController extends Controller
@@ -28,7 +30,21 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(route('dashboard', absolute: false));
+        // Kullanıcının rolüne göre yönlendirme
+        $user = Auth::user();
+
+        // Spatie'nin model_has_roles tablosundan kontrol et
+        $hasRole = DB::table('model_has_roles')
+            ->join('roles', 'model_has_roles.role_id', '=', 'roles.id')
+            ->where('model_has_roles.model_id', $user->id)
+            ->where('roles.name', 'super_admin')
+            ->exists();
+
+        if ($hasRole) {
+            return redirect()->intended('/super-admin');
+        } else {
+            return redirect()->intended('/panel');
+        }
     }
 
     /**
