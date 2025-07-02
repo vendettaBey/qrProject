@@ -3,6 +3,7 @@
 namespace App\Filament\Customer\Resources;
 
 use App\Filament\Customer\Resources\ThemeResource\Pages;
+use App\Filament\Customer\Resources\ThemeResource\Widgets\ActiveThemeOverview;
 use App\Models\Theme;
 use App\Models\Tenant;
 use Filament\Forms;
@@ -141,6 +142,13 @@ class ThemeResource extends Resource
   {
     return [
       //
+    ];
+  }
+
+  public static function getWidgets(): array
+  {
+    return [
+      ActiveThemeOverview::class,
     ];
   }
 
