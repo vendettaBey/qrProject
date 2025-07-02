@@ -8,6 +8,9 @@ use App\Models\Product;
 use App\Models\Restaurant;
 use App\Models\Tenant;
 use App\Models\Theme;
+use App\Models\QrCode;
+use App\Models\QrCodeScan;
+use App\Models\MenuViewLog;
 use Illuminate\Http\Request;
 
 class QrMenuController extends Controller
@@ -22,6 +25,22 @@ class QrMenuController extends Controller
   {
     // Menüyü slug'a göre bul
     $menu = Menu::where('slug', $menuSlug)->firstOrFail();
+
+    // QR koddan geliniyorsa table parametresi ile gelir
+    $tableNumber = request('table');
+    if ($tableNumber) {
+      $qrCode = QrCode::where('menu_id', $menu->id)
+        ->where('table_number', $tableNumber)
+        ->first();
+      if ($qrCode) {
+        QrCodeScan::create([
+          'qr_code_id' => $qrCode->id,
+          'scanned_at' => now(),
+          'ip_address' => request()->ip(),
+        ]);
+        $qrCode->incrementScanCount();
+      }
+    }
 
     // Menüye ait restoranı ve kiracıyı (tenant) bul
     $restaurant = $menu->restaurant;
@@ -47,6 +66,13 @@ class QrMenuController extends Controller
         ->take(6)
         ->get();
     }
+
+    // Menü görüntüleme logu ekle
+    MenuViewLog::create([
+      'menu_id' => $menu->id,
+      'viewed_at' => now(),
+      'ip_address' => request()->ip(),
+    ]);
 
     // Tema adına göre view dosyasını belirle
     $themeView = 'themes.' . ($theme->folder_name ?? 'restoran') . '.menu';

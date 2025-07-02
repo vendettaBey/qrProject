@@ -23,7 +23,17 @@ class ProductResource extends Resource
     {
         return $form
             ->schema([
-                //
+                Forms\Components\TextInput::make('name')->required()->label('Ürün Adı'),
+                Forms\Components\Textarea::make('description')->label('Açıklama'),
+                Forms\Components\TextInput::make('price')->numeric()->required()->label('Fiyat'),
+                Forms\Components\FileUpload::make('image')
+                    ->label('Ürün Fotoğrafı')
+                    ->image()
+                    ->directory('products')
+                    ->imagePreviewHeight('100')
+                    ->maxSize(2048),
+                Forms\Components\Toggle::make('is_active')->label('Aktif'),
+                Forms\Components\Toggle::make('featured')->label('Öne Çıkan'),
             ]);
     }
 
@@ -31,7 +41,13 @@ class ProductResource extends Resource
     {
         return $table
             ->columns([
-                //
+                Tables\Columns\ImageColumn::make('image')
+                    ->label('Fotoğraf')
+                    ->circular(),
+                Tables\Columns\TextColumn::make('name')->label('Ürün Adı')->searchable(),
+                Tables\Columns\TextColumn::make('price')->label('Fiyat')->money('TRY', true),
+                Tables\Columns\IconColumn::make('is_active')->boolean()->label('Aktif'),
+                Tables\Columns\IconColumn::make('featured')->boolean()->label('Öne Çıkan'),
             ])
             ->filters([
                 //

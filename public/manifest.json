@@ -1,0 +1,16 @@
+{
+  "name": "QR Menü",
+  "short_name": "QR Menü",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#764ba2",
+  "theme_color": "#764ba2",
+  "description": "Restoranınız için modern QR menü çözümü.",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    }
+  ]
+} 

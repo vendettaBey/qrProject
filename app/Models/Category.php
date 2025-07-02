@@ -10,6 +10,7 @@ class Category extends Model
 {
     protected $fillable = [
         'menu_id',
+        'tenant_id',
         'name',
         'description',
         'image',
@@ -24,6 +25,11 @@ class Category extends Model
     public function menu(): BelongsTo
     {
         return $this->belongsTo(Menu::class);
+    }
+
+    public function tenant(): BelongsTo
+    {
+        return $this->belongsTo(Tenant::class);
     }
 
     public function products(): HasMany

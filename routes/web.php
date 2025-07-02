@@ -28,4 +28,9 @@ Route::get('/qr/{menuSlug}', [QrMenuController::class, 'showQrCode'])->name('qr.
 // Tema Önizleme Rotaları
 Route::get('/theme/preview/{themeId}', [ThemePreviewController::class, 'preview'])->name('theme.preview');
 
+Route::get('/test-user-role', function () {
+    $user = \App\Models\User::find(12);
+    return $user ? $user->getRoleNames() : 'User not found';
+});
+
 require __DIR__ . '/auth.php';

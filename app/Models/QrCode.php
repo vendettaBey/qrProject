@@ -63,4 +63,9 @@ class QrCode extends Model
     {
         return route('menu.show', ['menu' => $this->menu_id, 'table' => $this->table_number]);
     }
+
+    public function scans()
+    {
+        return $this->hasMany(QrCodeScan::class);
+    }
 }

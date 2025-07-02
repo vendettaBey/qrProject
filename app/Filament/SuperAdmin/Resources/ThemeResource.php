@@ -64,6 +64,9 @@ class ThemeResource extends Resource
   {
     return $table
       ->columns([
+        Tables\Columns\ImageColumn::make('preview_image')
+          ->label('Önizleme')
+          ->circular(),
         Tables\Columns\TextColumn::make('name')
           ->label('Tema Adı')
           ->searchable()
@@ -102,6 +105,11 @@ class ThemeResource extends Resource
       ->actions([
         Tables\Actions\EditAction::make(),
         Tables\Actions\DeleteAction::make(),
+        Tables\Actions\Action::make('preview')
+          ->label('Önizle')
+          ->icon('heroicon-o-eye')
+          ->url(fn($record) => route('theme.preview', $record->id))
+          ->openUrlInNewTab(),
       ])
       ->bulkActions([
         Tables\Actions\BulkActionGroup::make([

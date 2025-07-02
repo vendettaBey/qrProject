@@ -19,8 +19,8 @@ class Product extends Model
         'image',
         'category_id',
         'menu_id',
-        'featured',
-        'is_active'
+        'is_featured',
+        'is_available'
     ];
 
     /**
@@ -30,13 +30,18 @@ class Product extends Model
      */
     protected $casts = [
         'price' => 'decimal:2',
-        'featured' => 'boolean',
-        'is_active' => 'boolean'
+        'is_featured' => 'boolean',
+        'is_available' => 'boolean'
     ];
 
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
+    }
+
+    public function menu(): BelongsTo
+    {
+        return $this->belongsTo(Menu::class);
     }
 
     public function getImageUrlAttribute(): string

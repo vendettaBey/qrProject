@@ -31,7 +31,14 @@ class QrCodeResource extends Resource
     {
         return $table
             ->columns([
-                //
+                Tables\Columns\TextColumn::make('id')->label('ID'),
+                Tables\Columns\TextColumn::make('name')->label('Ad'),
+                Tables\Columns\TextColumn::make('scans_count')
+                    ->label('Toplam Tarama')
+                    ->counts('scans'),
+                Tables\Columns\TextColumn::make('last_scan')
+                    ->label('Son Tarama')
+                    ->getStateUsing(fn($record) => optional($record->scans()->latest('scanned_at')->first())->scanned_at?->format('d.m.Y H:i')),
             ])
             ->filters([
                 //

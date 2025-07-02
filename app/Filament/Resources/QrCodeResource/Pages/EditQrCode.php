@@ -14,6 +14,15 @@ class EditQrCode extends EditRecord
     {
         return [
             Actions\DeleteAction::make(),
+            Actions\Action::make('qrCodeRegenerate')
+                ->label('QR Kodunu Yenile')
+                ->action(function () {
+                    $this->record->generateQrCode();
+                    $this->record->refresh();
+                    $this->notify('', 'QR kodu başarıyla yeniden oluşturuldu!');
+                })
+                ->color('primary')
+                ->icon('heroicon-o-arrow-path'),
         ];
     }
 }
